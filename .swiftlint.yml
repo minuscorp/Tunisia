@@ -1,0 +1,88 @@
+# For full rule list and descriptions see https://github.com/realm/SwiftLint/blob/master/Rules.md
+
+whitelist_rules:
+# Common rules
+# Auto Complete rules
+- closure_end_indentation
+- empty_enum_arguments
+- empty_parameters
+- empty_parentheses_with_trailing_closure
+- leading_whitespace
+- mark
+- no_space_in_method_call
+- protocol_property_accessors_order
+- redundant_nil_coalescing
+- trailing_comma
+- trailing_newline
+- trailing_whitespace
+- statement_position
+- unneeded_parentheses_in_closure_argument
+- unused_control_flow_label
+- unused_import
+- void_return
+
+# Warning rules
+- custom_rules
+- deployment_target
+- duplicate_enum_cases
+- duplicate_imports
+- inert_defer
+- no_fallthrough_only
+- nsobject_prefer_isequal
+- redundant_set_access_control
+- unused_capture_list
+
+# SPD Specific rules
+# Supports autocorrection
+- anyobject_protocol
+- colon
+- comma
+- implicit_return
+- literal_expression_end_indentation
+- operator_usage_whitespace
+- optional_enum_case_matching
+- redundant_discardable_let
+- redundant_optional_initialization
+- redundant_type_annotation
+- return_arrow_whitespace
+- vertical_whitespace_closing_braces
+- vertical_whitespace_opening_braces
+#- weak_delegate
+#- untyped_error_in_catch
+
+# Warning
+#- contains_over_filter_count
+#- contains_over_filter_is_empty
+#- contains_over_first_not_nil
+#- contains_over_range_nil_comparison
+#- convenience_type
+#- cyclomatic_complexity
+#- discarded_notification_center_observer
+- discouraged_object_literal
+#- empty_collection_literal
+- empty_count
+#- empty_string
+#- explicit_init
+- first_where
+- file_types_order
+- force_cast
+#- force_try
+- force_unwrapping
+#- identifier_name
+#- implicit_getter
+#- implicitly_unwrapped_optional
+- let_var_whitespace
+#- overridden_super_call
+- private_action
+##- private_outlet
+#- redundant_string_enum_value
+- strong_iboutlet
+#- unneeded_break_in_switch
+#- unowned_variable_capture
+#- vertical_whitespace
+
+#Warning rules
+
+trailing_whitespace:
+  ignores_empty_lines: true
+  ignores_comments: true

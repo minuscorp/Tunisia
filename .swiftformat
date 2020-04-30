@@ -1,0 +1,13 @@
+# Format Options
+--swiftversion 5.1
+--nospaceoperators ..<,...
+--importgrouping "testable-bottom"
+--indent 4
+--xcodeindentation "enabled"
+--ifdef "no-indent"
+
+# Excluded Directories
+--exclude Carthage,Configs,tools
+
+# Rules
+--rules blankLinesAtEndOfScope,blankLinesAtStartOfScope,blankLinesBetweenScopes,consecutiveBlankLines,consecutiveSpaces,duplicateImports,elseOnSameLine,indent,leadingDelimiters,redundantBackticks,redundantBreak,redundantExtensionACL,redundantFileprivate,redundantGet,redundantInit,redundantLet,redundantLetError,redundantNilInit,redundantObjc,redundantParens,redundantPattern,redundantRawValues,redundantReturn,redundantSelf,redundantVoidReturnType,semicolons,sortedImports,spaceAroundBraces,spaceAroundBrackets,spaceAroundComments,spaceAroundGenerics,spaceAroundOperators,spaceInsideBraces,spaceInsideBrackets,spaceInsideComments,spaceInsideGenerics,spaceInsideParens,strongifiedSelf,todos,trailingClosures,trailingSpace,typeSugar,void,yodaConditions
