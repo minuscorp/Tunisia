@@ -3,5 +3,6 @@ import XCTest
 import TunisiaTests
 
 var tests = [XCTestCaseEntry]()
-tests += TunisiaTests.allTests()
+tests += TunisiaTests.__allTests()
+
 XCTMain(tests)

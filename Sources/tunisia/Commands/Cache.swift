@@ -11,40 +11,68 @@
  limitations under the License.
  */
 
-import Commandant
-import Curry
 import Foundation
 import Result
 import XCDBLD
 import TunisiaKit
+import ArgumentParser
+import SwiftShell
+import Rainbow
+import CarthageKit
 
-public struct CacheCommand: CommandProtocol {
+struct Cache: ParsableCommand {
     
-    public struct CacheOptions: OptionsProtocol {
-        public let force: Bool
-        public let verbose: Bool
-        public let buildOptions: BuildOptions
-        public let dependenciesToBuild: [String]?
-        
-        public static func evaluate(_ m: CommandMode) -> Result<CacheOptions, CommandantError<CarthageError>> {
-            return curry(CacheOptions.init)
-                <*> m <| Option(key: "force", defaultValue: false, usage: "To force the cache creation, invalidating potential previous values")
-                <*> m <| Option(key: "verbose", defaultValue: false, usage: "Verbose output")
-                <*> BuildOptions.evaluate(m)
-                <*> (m <| Argument(defaultValue: [], usage: "the dependency names to build", usageParameter: "dependency names")).map { $0.isEmpty ? nil : $0 }
-                
+    @Flag
+    var force: Bool = false
+    
+    @Flag
+    var verbose: Bool = false
+    
+    @Option(name: .shortAndLong, help: "The destination directory of the cache")
+    var destinationDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.absoluteString
+    
+    @Option(name: .shortAndLong, help: "The working directory from where to find the Cartfile")
+    var workingDirectory: String = FileManager.default.currentDirectoryPath
+    
+    @Argument(parsing: .unconditionalRemaining, help: "The carthage arguments to apply to Tunisia.")
+    var carthageCommand: [String] = []
+    
+    func run() throws {
+        let directoryURL = URL(fileURLWithPath: workingDirectory, isDirectory: true)
+        let project = Project(directoryURL: directoryURL)
+        let cartfile = try ResolvedCartfile.from(string: String(contentsOf: project.resolvedCartfileURL)).get()
+        let (arguments, dependencies) = cleanCarthageCommand(carthageCommand)
+        for (dependency, pinnedVersion) in cartfile.dependencies {
+            if dependencies.contains(dependency.description) {
+                print("Skipping \(dependency.description) by configuration.".green)
+                continue
+            }
+            print("Preparing to cache \(dependency.description) at \(pinnedVersion.commitish)".blue)
+            let commandString = "carthage \(arguments) \(dependency.description)"
+            print("Executing: \(commandString)")
+            try runAndPrint(commandString)
+            print("Finished running carthage task".green)
+            print("Caching the compiled dependency".blue)
+            
         }
         
     }
     
-    public let verb = "cache"
-    public let function = "Build the project's dependencies and caches them"
-    
-    public func run(_ options: CacheOptions) -> Result<(), CarthageError> {
-        let directoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath, isDirectory: true)
-        let project = Project(directoryURL: directoryURL)
-        let buildProducer = project.loadResolvedCartfile()
-        return .success(())
+    func cleanCarthageCommand(_ command: [String]) -> (arguments: String, dependencies: String) {
+        let arguments = command.filter { $0.starts(with: "--") }
+        let dependencies = Set(command).subtracting(arguments)
+        return (arguments.joined(separator: " "), dependencies.joined(separator: " "))
     }
+    
+    
+//    public let verb = "cache"
+//    public let function = "Build the project's dependencies and caches them"
+//
+//    public func run(_ options: CacheOptions) -> Result<(), CarthageError> {
+//        let directoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath, isDirectory: true)
+//        let project = Project(directoryURL: directoryURL)
+//        let buildProducer = project.loadResolvedCartfile()
+//        return .success(())
+//    }
     
 }

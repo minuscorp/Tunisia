@@ -5,9 +5,9 @@
         "package": "Carthage",
         "repositoryURL": "https://github.com/Carthage/Carthage",
         "state": {
-          "branch": "master",
-          "revision": "f656edfe35651b54eec50d814e79d079f8eea7c4",
-          "version": null
+          "branch": null,
+          "revision": "25ad8c8ed71afe218aed9a7f7631543ce8adf858",
+          "version": "0.34.0"
         }
       },
       {
@@ -56,6 +56,15 @@
         }
       },
       {
+        "package": "Rainbow",
+        "repositoryURL": "https://github.com/onevcat/Rainbow",
+        "state": {
+          "branch": null,
+          "revision": "9c52c1952e9b2305d4507cf473392ac2d7c9b155",
+          "version": "3.1.5"
+        }
+      },
+      {
         "package": "ReactiveSwift",
         "repositoryURL": "https://github.com/ReactiveCocoa/ReactiveSwift.git",
         "state": {
@@ -74,12 +83,39 @@
         }
       },
       {
+        "package": "Regex",
+        "repositoryURL": "https://github.com/sharplet/Regex.git",
+        "state": {
+          "branch": null,
+          "revision": "76c2b73d4281d77fc3118391877efd1bf972f515",
+          "version": "2.1.1"
+        }
+      },
+      {
         "package": "Result",
         "repositoryURL": "https://github.com/antitypical/Result.git",
         "state": {
           "branch": null,
           "revision": "2ca499ba456795616fbc471561ff1d963e6ae160",
           "version": "4.1.0"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "eb51f949cdd0c9d88abba9ce79d37eb7ea1231d0",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "SwiftShell",
+        "repositoryURL": "https://github.com/kareman/SwiftShell",
+        "state": {
+          "branch": null,
+          "revision": "fb7fc2c9ad8811caf324431a508fb79e3fb74f99",
+          "version": "5.0.1"
         }
       },
       {

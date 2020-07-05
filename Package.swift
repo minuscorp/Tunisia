@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -16,10 +16,11 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/Carthage/Carthage", .branch("master")),
-        .package(url: "https://github.com/Carthage/Commandant.git", .exact("0.16.0")),
-        .package(url: "https://github.com/thoughtbot/Curry.git", from: "4.0.2"),
-        .package(url: "https://github.com/jdhealy/PrettyColors.git", from: "5.0.2"),
+        .package(url: "https://github.com/Carthage/Carthage", .exact("0.34.0")),
+        .package(url: "https://github.com/kareman/SwiftShell", from: "5.0.1"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.2.0"),
+        .package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
+        .package(url: "https://github.com/sharplet/Regex.git", from: "2.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -31,13 +32,16 @@ let package = Package(
         .target(
             name: "TunisiaKit",
             dependencies: [
-                "CarthageKit",
-                "carthage",
-                "Commandant",
-                "Curry",
-                "PrettyColors"
+                .product(name: "CarthageKit", package: "Carthage"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                "XCDBLD",
+                "SwiftShell",
+                "Rainbow",
+                "Regex"
             ]
+        ),
+        .testTarget(name: "TunisiaTests",
+                    dependencies: ["TunisiaKit"]
         )
-    ],
-    swiftLanguageVersions: [.v4_2]
+    ]
 )

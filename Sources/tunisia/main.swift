@@ -11,4 +11,4 @@
  limitations under the License.
  */
 
-Tunisia().run()
+Tunisia.main()

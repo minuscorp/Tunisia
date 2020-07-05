@@ -13,34 +13,19 @@
 
 
 import Foundation
-import Commandant
-import PrettyColors
 import TunisiaKit
+import CarthageKit
+import ArgumentParser
+import Rainbow
 
-public struct Tunisia {
-    
-    public enum Error: Swift.Error {
-        case `default`(String)
-        case carthage(CarthageError)
+struct Tunisia: ParsableCommand {
 
-        var localizedDescription: String {
-            switch self {
-            case .default(let description):
-                return description
-            case .carthage(let error):
-                return error.description
-            }
-        }
-    }
-
+    static let version = "0.0.1"
     
-    public static let version = "0.0.1"
-    
-    public func run() {
-        print("Hello World")
-        let registry = CommandRegistry<Self.Error>()
-        registry.main(defaultVerb: "help") { error in
-            fputs(Color.Wrap(foreground: .red).wrap("\(error.localizedDescription)\n"), stderr)
-        }
-    }
+    static var configuration = CommandConfiguration(
+        version: Tunisia.version,
+        shouldDisplay: true,
+        subcommands: [Cache.self],
+        defaultSubcommand: Cache.self
+    )
 }
