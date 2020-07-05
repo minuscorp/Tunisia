@@ -30,4 +30,11 @@ final class TunisiaTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testDestinationDirectory() {
+        let destinationDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.absoluteString
+        let path = "tunisia" + "/" + "X1.0.0_S1.0.0" + "/" + "Tunisia"
+        let dataPath = URL(fileURLWithPath: destinationDirectory, isDirectory: true).appendingPathComponent(path).appendingPathComponent("1.0.0")
+        XCTAssertEqual(dataPath.path, destinationDirectory.replacingOccurrences(of: "file://", with: "") + path + "/" + "1.0.0")
+    }
 }

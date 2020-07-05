@@ -42,7 +42,11 @@ struct Cache: ParsableCommand {
         let project = Project(directoryURL: directoryURL)
         let cartfile = try ResolvedCartfile.from(string: String(contentsOf: project.resolvedCartfileURL)).get()
         let (arguments, dependencies) = cleanCarthageCommand(carthageCommand)
+        let xcodeVersion = try CommandUtils.xcodeVersion()
+        let swiftVersion = try CommandUtils.swiftVersion()
         for (dependency, pinnedVersion) in cartfile.dependencies {
+            let carthagePath = workingDirectory + "/Carthage/Build"
+            FileUtils.remove(path: carthagePath)
             if dependencies.contains(dependency.description) {
                 print("Skipping \(dependency.description) by configuration.".green)
                 continue
@@ -53,9 +57,18 @@ struct Cache: ParsableCommand {
             try runAndPrint(commandString)
             print("Finished running carthage task".green)
             print("Caching the compiled dependency".blue)
-            
+            let path = Tunisia.name.lowercased() + "/" + "X\(xcodeVersion)_S\(swiftVersion)" + "/" + dependency.description
+            let dataPath = URL(fileURLWithPath: destinationDirectory, isDirectory: true).appendingPathComponent(path)
+            let finalPath = dataPath.path
+            let finalPathWithVersion = dataPath.appendingPathComponent("\(pinnedVersion.description)")
+            try FileUtils.createDir(finalPath)
+            FileUtils.remove(path: finalPathWithVersion.path)
+            do {
+                try FileUtils.copy(path: carthagePath, to: finalPathWithVersion.path)
+            } catch {
+                try FileUtils.createDir(finalPathWithVersion.path)
+            }
         }
-        
     }
     
     func cleanCarthageCommand(_ command: [String]) -> (arguments: String, dependencies: String) {

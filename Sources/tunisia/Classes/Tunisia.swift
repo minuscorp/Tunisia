@@ -19,6 +19,8 @@ import ArgumentParser
 import Rainbow
 
 struct Tunisia: ParsableCommand {
+    
+    static let name = String(describing: Self.self)
 
     static let version = "0.0.1"
     
