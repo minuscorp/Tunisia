@@ -34,16 +34,24 @@ struct Cache: ParsableCommand {
     @Option(name: .shortAndLong, help: "The working directory from where to find the Cartfile")
     var workingDirectory: String = FileManager.default.currentDirectoryPath
     
+    @Argument(help: "The carthage verb to apply to Tunisia")
+    var carthageVerb: String
+    
     @Argument(parsing: .unconditionalRemaining, help: "The carthage arguments to apply to Tunisia.")
     var carthageCommand: [String] = []
     
     func run() throws {
+        FileUtils.cd(workingDirectory)
         let directoryURL = URL(fileURLWithPath: workingDirectory, isDirectory: true)
         let project = Project(directoryURL: directoryURL)
         let cartfile = try ResolvedCartfile.from(string: String(contentsOf: project.resolvedCartfileURL)).get()
         let (arguments, dependencies) = cleanCarthageCommand(carthageCommand)
         let xcodeVersion = try CommandUtils.xcodeVersion()
         let swiftVersion = try CommandUtils.swiftVersion()
+        let (carthageDir, mainContext) = try CommandUtils.carthageDir()
+        if carthageVerb != "bootstrap" && carthageVerb != "build" {
+            throw Error.default("Invalid carthage command found: \(carthageVerb) expected [\"bootstrap\", \"build\"]")
+        }
         for (dependency, pinnedVersion) in cartfile.dependencies {
             let carthagePath = workingDirectory + "/Carthage/Build"
             FileUtils.remove(path: carthagePath)
@@ -52,9 +60,12 @@ struct Cache: ParsableCommand {
                 continue
             }
             print("Preparing to cache \(dependency.description) at \(pinnedVersion.commitish)".blue)
-            let commandString = "carthage \(arguments) \(dependency.description)"
-            print("Executing: \(commandString)")
-            try runAndPrint(commandString)
+            let commandString = "\(carthageVerb) \(arguments.split(separator: " ")) \(dependency.name)"
+            print("Executing: carthage \(commandString)")
+            mainContext.env["PWD"] = workingDirectory
+            let command = mainContext.runAsyncAndPrint(carthageDir, carthageVerb, arguments, dependency.name)
+            try command.finish()
+            CommandUtils.runStream(args: ["bootstrap", "--no-use-binaries", "--platform", "iOS", "RxSwift"])
             print("Finished running carthage task".green)
             print("Caching the compiled dependency".blue)
             let path = Tunisia.name.lowercased() + "/" + "X\(xcodeVersion)_S\(swiftVersion)" + "/" + dependency.description
@@ -71,10 +82,16 @@ struct Cache: ParsableCommand {
         }
     }
     
-    func cleanCarthageCommand(_ command: [String]) -> (arguments: String, dependencies: String) {
-        let arguments = command.filter { $0.starts(with: "--") }
-        let dependencies = Set(command).subtracting(arguments)
-        return (arguments.joined(separator: " "), dependencies.joined(separator: " "))
+    func cleanCarthageCommand(_ command: [String]) -> (arguments: [String], dependencies: [String]) {
+        var arguments = [String]()
+        var dependencies = [String]()
+        if let buildPlatforms = BuildPlatform.from(string: command.joined(separator: " ")) {
+            let platform: [String] = ["--platform"] + buildPlatforms.description.split(separator: " ").map { String($0) }
+            arguments += platform
+        }
+        arguments += command.filter { $0.starts(with: "--") }.filter { !$0.contains("platform")}
+        dependencies += Set(command).subtracting(arguments)
+        return (arguments, dependencies)
     }
     
     
