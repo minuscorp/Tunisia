@@ -36,7 +36,7 @@ all: installables
 installables:
 	swift build $(SWIFT_BUILD_FLAGS)
 
-install: build
+install: installables
 	install -d "$(PREFIX)/bin"
 	install -C -m 755 $(BUILD_PATH) $(INSTALL_PATH)
 
