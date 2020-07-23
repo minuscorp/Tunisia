@@ -11,7 +11,7 @@ let package = Package(
         .executable(
             name: "tunisia",
             targets: ["tunisia"]
-        )
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -37,11 +37,10 @@ let package = Package(
                 "XCDBLD",
                 "SwiftShell",
                 "Rainbow",
-                "Regex"
+                "Regex",
             ]
         ),
         .testTarget(name: "TunisiaTests",
-                    dependencies: ["TunisiaKit"]
-        )
+                    dependencies: ["TunisiaKit"]),
     ]
 )

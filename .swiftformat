@@ -1,13 +1,37 @@
 # Format Options
---swiftversion 5.1
---nospaceoperators ..<,...
+--swiftversion 5.0
 --importgrouping "testable-bottom"
+--exclude Tests/TunisiaTests/LinuxMain.swift,Tests/TunisiaTests/XCTestManifest.swift
+--allman false
+--binarygrouping none
+--closingparen balanced
+--commas always
+--conflictmarkers reject
+--decimalgrouping none
+--elseposition same-line
+--empty void
+--exponentcase lowercase
+--exponentgrouping disabled
+--fractiongrouping disabled
+--fragment false
+--header "\n// Copyright [2019] [Jorge Revuelta Herrero]\n// Licensed under the Apache License, Version 2.0 (the "License");\n// you may not use this file except in compliance with the License.\n//You may obtain a copy of the License at\n//http://www.apache.org/licenses/LICENSE-2.0 \n// Unless required by applicable law or agreed to in writing, software\n// distributed under the License is distributed on an "AS IS" BASIS,\n// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n// See the License for the specific language governing permissions and\n// limitations under the License.\n"
+--hexgrouping none
+--hexliteralcase uppercase
+--ifdef no-indent
+--importgrouping alphabetized
 --indent 4
---xcodeindentation "enabled"
---ifdef "no-indent"
-
-# Excluded Directories
---exclude Carthage,Configs,tools
-
-# Rules
---rules blankLinesAtEndOfScope,blankLinesAtStartOfScope,blankLinesBetweenScopes,consecutiveBlankLines,consecutiveSpaces,duplicateImports,elseOnSameLine,indent,leadingDelimiters,redundantBackticks,redundantBreak,redundantExtensionACL,redundantFileprivate,redundantGet,redundantInit,redundantLet,redundantLetError,redundantNilInit,redundantObjc,redundantParens,redundantPattern,redundantRawValues,redundantReturn,redundantSelf,redundantVoidReturnType,semicolons,sortedImports,spaceAroundBraces,spaceAroundBrackets,spaceAroundComments,spaceAroundGenerics,spaceAroundOperators,spaceInsideBraces,spaceInsideBrackets,spaceInsideComments,spaceInsideGenerics,spaceInsideParens,strongifiedSelf,todos,trailingClosures,trailingSpace,typeSugar,void,yodaConditions
+--indentcase false
+--linebreaks lf
+--octalgrouping none
+--operatorfunc spaced
+--patternlet hoist
+--ranges spaced
+--self remove
+--selfrequired 
+--semicolons never
+--stripunusedargs always
+--trailingclosures 
+--trimwhitespace always
+--wraparguments preserve
+--wrapcollections before-first
+--xcodeindentation disabled

@@ -6,6 +6,7 @@ extension TunisiaTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__TunisiaTests = [
+        ("testDestinationDirectory", testDestinationDirectory),
         ("testSwiftVersionRegex", testSwiftVersionRegex),
         ("testXcodeVersion", testXcodeVersion),
     ]
