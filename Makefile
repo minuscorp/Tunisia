@@ -54,7 +54,7 @@ test:
 linuxmain:
 	swift test --generate-linuxmain
 
-zip: build
+zip: installables
 	zip -D $(TOOL_NAME).macos.zip $(BUILD_PATH)
 
 get_sha:
