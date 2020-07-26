@@ -1,5 +1,5 @@
 # ModuleInterface
-![Build Status](https://github.com/minuscorp/Tunisia/workflows/swift/badge.svg)
+![Build Status](https://github.com/minuscorp/Tunisia/workflows/Swift/badge.svg)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/minuscorp/Tunisia)
 ![License](https://img.shields.io/static/v1?label=License&message=Apache&color=blue)
 ![Swift version](https://img.shields.io/badge/Swift-5.0-orange)
