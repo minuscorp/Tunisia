@@ -47,8 +47,12 @@ public enum FileUtils {
         try FileManager.default.removeItem(atPath: path)
     }
 
-    public static func copy(path: String, to destinationPath: String) throws {
+    public static func move(path: String, to destinationPath: String) throws {
         try FileManager.default.moveItem(atPath: path, toPath: destinationPath)
+    }
+    
+    public static func copy(path: String, to destinationPath: String) throws {
+        try FileManager.default.copyItem(atPath: path, toPath: destinationPath)
     }
 
     @discardableResult

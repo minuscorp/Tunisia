@@ -24,9 +24,6 @@ struct Cache: ParsableCommand {
     @Flag
     var force: Bool = false
 
-    @Flag
-    var verbose: Bool = false
-
     @Option(name: .shortAndLong, help: "The destination directory of the cache")
     var destinationDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.absoluteString
 
@@ -45,18 +42,20 @@ struct Cache: ParsableCommand {
         let project = Project(directoryURL: directoryURL)
         let cartfile = try ResolvedCartfile.from(string: String(contentsOf: project.resolvedCartfileURL)).get()
         let (arguments, dependencies) = cleanCarthageCommand(carthageCommand)
-        let xcodeVersion = try CommandUtils.xcodeVersion()
-        let swiftVersion = try CommandUtils.swiftVersion()
         let (carthageDir, mainContext) = try CommandUtils.carthageDir()
+        let carthagePath = workingDirectory + "/Carthage/Build"
         if carthageVerb != "bootstrap", carthageVerb != "build" {
-            throw Error.default("Invalid carthage command found: \(carthageVerb) expected [\"bootstrap\", \"build\"]")
+            throw Error.default("Invalid carthage command found: \(carthageVerb) expected ['bootstrap', 'build']")
         }
         for (dependency, pinnedVersion) in cartfile.dependencies {
-            let carthagePath = workingDirectory + "/Carthage/Build"
-            try FileUtils.remove(path: carthagePath)
-            if !dependencies.contains(dependency.name) {
+            let finalPathWithVersion = try FileUtils.cachePath(for: dependency, pinnedVersion, cacheBaseDirectory: destinationDirectory)
+            try? FileUtils.remove(path: carthagePath)
+            if !dependencies.contains(dependency.name) && !dependencies.isEmpty {
                 print("Skipping \(dependency.description) by configuration.".green)
                 continue
+            }
+            if FileUtils.exists(path: finalPathWithVersion.path) && !force {
+                print("Skipping \(dependency.description), previous cache found.".green)
             }
             print("Preparing to cache \(dependency.description) at \(pinnedVersion.commitish)".blue)
             let commandString = "\(carthageVerb) \(arguments.split(separator: " ")) \(dependency.name)"
@@ -66,18 +65,22 @@ struct Cache: ParsableCommand {
             try command.finish()
             print("Finished running carthage task".green)
             print("Caching the compiled dependency".blue)
-            let path = Tunisia.name.lowercased() + "/" + "X\(xcodeVersion)_S\(swiftVersion)" + "/" + dependency.name
-            let dataPath = URL(fileURLWithPath: destinationDirectory, isDirectory: true).appendingPathComponent(path)
-            let finalPath = dataPath.path
-            let finalPathWithVersion = dataPath.appendingPathComponent("\(pinnedVersion.commitish)")
-            try FileUtils.createDir(finalPath)
-            try FileUtils.remove(path: finalPathWithVersion.path)
+            try FileUtils.createDir(finalPathWithVersion.deletingLastPathComponent())
+            try? FileUtils.remove(path: finalPathWithVersion.path)
             do {
                 try FileUtils.copy(path: carthagePath, to: finalPathWithVersion.path)
             } catch {
                 try FileUtils.createDir(finalPathWithVersion.path)
             }
         }
+    }
+    
+    private func cachePath(for dependency: (Dependency, PinnedVersion)) throws -> URL {
+        let xcodeVersion = try CommandUtils.xcodeVersion()
+        let swiftVersion = try CommandUtils.swiftVersion()
+        let path = Tunisia.name.lowercased() + "/" + "X\(xcodeVersion)_S\(swiftVersion)" + "/" + dependency.0.name
+        let dataPath = URL(fileURLWithPath: destinationDirectory, isDirectory: true).appendingPathComponent(path)
+        return dataPath.appendingPathComponent("\(dependency.1.commitish)")
     }
 
     private func cleanCarthageCommand(_ command: [String]) -> (arguments: [String], dependencies: [String]) {

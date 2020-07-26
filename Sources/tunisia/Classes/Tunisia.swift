@@ -25,7 +25,7 @@ struct Tunisia: ParsableCommand {
     static var configuration = CommandConfiguration(
         version: Tunisia.version,
         shouldDisplay: true,
-        subcommands: [Cache.self],
+        subcommands: [Cache.self, Restore.self],
         defaultSubcommand: Cache.self
     )
 }
