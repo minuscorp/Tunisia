@@ -21,7 +21,7 @@ import TunisiaKit
 import XCDBLD
 
 struct Cache: ParsableCommand {
-    @Flag
+    @Flag(help: "Whether to cache the libraries regardless of being cached.")
     var force: Bool = false
 
     @Option(name: .shortAndLong, help: "The destination directory of the cache")
