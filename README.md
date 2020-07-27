@@ -98,9 +98,9 @@ Requirements:
 Swift 5.0 runtime and Xcode installed in your computer.
 
 ### Using Homebrew
-> Not available yet
 
 `brew tap minuscorp/tunisia`
+
 `brew install tunisia`
 
 ### Building with Swift Package Manager
