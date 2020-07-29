@@ -26,7 +26,7 @@ struct Restore: ParsableCommand {
         let directoryURL = URL(fileURLWithPath: workingDirectory, isDirectory: true)
         let project = Project(directoryURL: directoryURL)
         let cartfile = try ResolvedCartfile.from(string: String(contentsOf: project.resolvedCartfileURL)).get()
-        let carthagePath = workingDirectory + "/Carthage/Build"
+        let carthagePath = workingDirectory + "/" + Constants.binariesFolderPath
         for (dependency, pinnedVersion) in cartfile.dependencies {
             let finalPathWithVersion = try FileUtils.cachePath(for: dependency, pinnedVersion, cacheBaseDirectory: cacheDirectory)
             if !dependenciesToRestore.contains(dependency.name) && !dependenciesToRestore.isEmpty {
@@ -38,7 +38,7 @@ struct Restore: ParsableCommand {
                 continue
             }
             print("Restoring \(dependency.name) at \(pinnedVersion.commitish)".blue)
-            let destinationPath = carthagePath + "/" + dependency.name
+            let destinationPath = carthagePath
             
             try? FileUtils.createDir(destinationPath)
             let contents = try FileManager.default.contentsOfDirectory(at: finalPathWithVersion, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
