@@ -65,3 +65,8 @@ get_sha:
 brew_push: get_sha
 	SHA=$(shell cat sha_$(VERSION).txt); \
 	brew bump-formula-pr --url=https://github.com/minuscorp/$(TOOL_NAME)/archive/$(VERSION).tar.gz --sha256=$$SHA $(TOOL_NAME)
+
+bump:
+	BUMP_VERSION=`git describe --tags --abbrev=0 | awk -F. '{$NF+=1; OFS="."; print $0}'`
+	git tag $(BUMP_VERSION)
+	git push origin $(BUMP_VERSION)
