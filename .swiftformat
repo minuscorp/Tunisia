@@ -1,7 +1,7 @@
 # Format Options
 --swiftversion 5.0
 --importgrouping "testable-bottom"
---exclude Tests/TunisiaTests/LinuxMain.swift,Tests/TunisiaTests/XCTestManifest.swift
+--exclude Tests
 --allman false
 --binarygrouping none
 --closingparen balanced

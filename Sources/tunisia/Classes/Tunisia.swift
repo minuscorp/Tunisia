@@ -20,7 +20,7 @@ import TunisiaKit
 struct Tunisia: ParsableCommand {
     static let name = String(describing: Self.self)
 
-    static let version = "0.0.1"
+    static let version = "0.0.3"
 
     static var configuration = CommandConfiguration(
         version: Tunisia.version,

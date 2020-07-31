@@ -50,7 +50,7 @@ public enum FileUtils {
     public static func move(path: String, to destinationPath: String) throws {
         try FileManager.default.moveItem(atPath: path, toPath: destinationPath)
     }
-    
+
     public static func copy(path: String, to destinationPath: String) throws {
         try FileManager.default.copyItem(atPath: path, toPath: destinationPath)
     }
