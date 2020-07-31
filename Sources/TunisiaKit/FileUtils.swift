@@ -26,7 +26,7 @@ public enum FileUtils {
         FileManager.default.fileExists(atPath: path)
     }
 
-    public static func directoryConstainsFile(path: String) throws -> Bool {
+    public static func directoryFileContents(at path: String) throws -> Bool {
         let contents = try FileManager.default.contentsOfDirectory(atPath: path)
             .filter { $0 != ".DS_Store" && $0 != "" }
         return !contents.isEmpty

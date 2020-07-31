@@ -50,7 +50,13 @@ struct Restore: ParsableCommand {
             try? FileUtils.createDir(destinationPath)
             let contents = try FileManager.default.contentsOfDirectory(at: finalPathWithVersion, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
             for directory in contents {
-                try FileUtils.copy(path: directory.path, to: destinationPath + "/" + directory.pathComponents.last!)
+                try? FileUtils.createDir(destinationPath + "/" + directory.pathComponents.last!)
+                if try FileUtils.directoryFileContents(at: directory.relativePath) {
+                    let fileList = try FileManager.default.contentsOfDirectory(atPath: directory.relativePath)
+                    for file in fileList where file != ".DS_Store" && file != "" {
+                        try FileManager.default.copyItem(atPath: directory.appendingPathComponent(file, isDirectory: false).relativePath, toPath: destinationPath + "/" + directory.pathComponents.last! + "/" + file)
+                    }
+                }
             }
             print("Restored \(dependency.name) at \(pinnedVersion.commitish)".green)
         }
