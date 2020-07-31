@@ -9,7 +9,7 @@ A Carthage local cache based on compiler, library and Xcode version.
 
 ## What does Tunisia?
 
-Tunisia chaches your Carthage dependencies into a local cache using a number of common parameters that allows to have several Xcode, Swift or library versions installed and restored on demand with just **one compilation** per combination.
+Tunisia caches your Carthage dependencies into a local cache using a number of common parameters that allows to have several Xcode, Swift or library versions installed and restored on demand with just **one compilation** per combination.
 
 This means:
 
