@@ -68,5 +68,5 @@ brew_push: get_sha
 
 bump:
 	BUMP_VERSION=`git describe --tags --abbrev=0 | awk -F. '{$NF+=1; OFS="."; print $0}'`
-	git tag $$BUMP_VERSION)
+	git tag $$BUMP_VERSION
 	git push origin $$BUMP_VERSION
