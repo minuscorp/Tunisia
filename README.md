@@ -49,6 +49,7 @@ With Tunisia you would:
 ```
 tunisia bootstrap --no-use-binaries --platform iOS
 ```
+
 ![cache](https://media.giphy.com/media/QxXiVatN1Y72uKioOy/source.gif)
 
 That's it. You just exchange `carthage` for `tunisia`.
@@ -81,6 +82,8 @@ The usage of restore is even easier:
 ```
 tunisia restore
 ```
+
+![restore](https://media.giphy.com/media/fxHcOtbYhzzbnBMzLU/source.gif)
 
 And the tool makes all the heavy lifting under the hood.
 
