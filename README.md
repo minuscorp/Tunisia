@@ -49,6 +49,7 @@ With Tunisia you would:
 ```
 tunisia bootstrap --no-use-binaries --platform iOS
 ```
+![cache](https://giphy.com/gifs/QxXiVatN1Y72uKioOy)
 
 That's it. You just exchange `carthage` for `tunisia`.
 
