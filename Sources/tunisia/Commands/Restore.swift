@@ -54,7 +54,11 @@ struct Restore: ParsableCommand {
                 if try FileUtils.directoryFileContents(at: directory.relativePath) {
                     let fileList = try FileManager.default.contentsOfDirectory(atPath: directory.relativePath)
                     for file in fileList where file != ".DS_Store" && file != "" {
-                        try FileManager.default.copyItem(atPath: directory.appendingPathComponent(file, isDirectory: false).relativePath, toPath: destinationPath + "/" + directory.pathComponents.last! + "/" + file)
+                        let fileDirectory = destinationPath + "/" + directory.pathComponents.last! + "/" + file
+                        if FileManager.default.fileExists(atPath: fileDirectory) {
+                            try FileUtils.remove(path: fileDirectory)
+                        }
+                        try FileManager.default.copyItem(atPath: directory.appendingPathComponent(file, isDirectory: false).relativePath, toPath: fileDirectory)
                     }
                 }
             }
